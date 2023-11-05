@@ -1,6 +1,13 @@
 mod systems;
+mod components;
+mod resources;
+mod pseudo_random;
+
+use crate::resources::MouseInfos;
 
 use bevy::prelude::*;
+use crate::systems::*;
+
 
 fn main() {
     App::new()
@@ -12,6 +19,9 @@ fn main() {
             }),
             ..default()
         }))
+        .init_resource::<MouseInfos>()
         .add_systems(Startup, systems::setup)
+        .add_systems(PreUpdate, (clicks_handeling, mouse_pos_updater))
+        .add_systems(FixedUpdate, (fur_activation, fur_gravity_update))
         .run()
 }
